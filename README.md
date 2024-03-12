@@ -14,8 +14,13 @@ Startseite - Übersichtsseite mit einer groben Übersicht an gefahrenen Kilomete
 Tracking - Hier werden die gefahrenen KM & HM eingetragen und somit die gefahrenen Rides getrackt
 Ziele - Hier werden Ziele definiert und der Fortschritt der Ziele gemessen
 Planing - Hier können passende Rides geplant werden, welche auf das aktuelle Ziel einzahlen
+Kalender - Hier kann man sehen an welchen Tagen ein Training absolviert wurde, und wie viel gefahren wurde
 
 ## Beschreibung, welche Daten Sie einlesen, speichern oder ausgeben
+
+Die Daten werden von den Usern direkt selber eingegeben und gespeichert
+(Optional kann geprüft werden, ob eien alfälliges einlesen über Garmin / Strava / Apple Fitness / etc. möglich ist)
+Es werden jedem User seine eigenen Daten ausgegeben welche er auch eingegeben hat. Diese können jedoch summiert oder gezielt eingegeben werden.
 
 ## Beschreibung, welche Funktionen der Nutzer auslösen kann
 
