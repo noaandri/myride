@@ -1,6 +1,6 @@
 # myride
 
-## Ausgangslage 
+## Ausgangslage hallo
 
 Meine Applikation soll begeisterten Radfahrern eine übersichtliche Möglichkeit bieten, gefahrene KM sowie Höhenmeter zu tracken sowie neue Rides zu planen. Zudem wird aufrgrund der absolvierten Fahrten der Fortschritt getrackt. Es können persönliche Ziele definiert werden und so Routen und Trainings spezifisch auf diese Ziele geplant werden.
 
