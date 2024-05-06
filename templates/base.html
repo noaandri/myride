@@ -10,12 +10,17 @@
         <link rel="stylesheet" href="{{url_for('static', filename='static\css/styles.css')}}"/>
     </head>
     <body>
+
+        <div>
+            <h2>This is the Body Div</h2>
+        </div>
+
         {% block content %}
-        <h1>Hello</h1>
+        <!--index.html-->
         {% endblock %}
+        <div>
+            <h2>This is the footer Div</h2>
+        </div>
 
-        {% block footer %}
-
-        {% endblock %}
     </body>
 </html>
