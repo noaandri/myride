@@ -4,12 +4,12 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     ##name="Noa Roth"
-    return render_template("index.html", name=name)
+    return render_template("index.html")
 
 @app.route('/page1')
 def hi():
     ##name="Page1"
-    return render_template("Page1.html", name=name)
+    return render_template("Page1.html")
 
 if __name__ == '__main__':
     app.run(debug=True, port=3000)
