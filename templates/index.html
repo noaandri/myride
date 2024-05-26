@@ -1,8 +1,26 @@
 <!--Verknüpft File mit base.html-->
 {% extends "base.html" %}
+
 {% block content %}
-<div>
-    <h2>big title</h2>
-    <p>This is the content of my website.</p>
+<div class="content-wrapper">
+  <div id="index-page">
+    <h3>Wilkommen zu myride!</h3>
+    <p>Deine App um dir deine gefahrenen Kilometer und Höhenmeter zusammenzufassen!</p>
+
+    <section class="features">
+        <h2>Was kannst du tun?</h2>
+        <ul>
+            <li>Siehe eine Zusammenfassung über die gefahrenen Kilometer sowie Höhenmeter.</li>
+            <li>Sehe wann du wie viel gefahren bist.</li>
+        </ul>
+    </section>
+    <section class="cta">
+        <h2>Sei dabei!</h2>
+        <p>Einfache und schnelle Registrierung.</p>
+
+    <!-- Button zur zum Registrieren -->
+    <a href="{{ url_for('register') }}" class="btn btn-primary">Registrieren</a>
+    </section>
+  </div>
 </div>
 {% endblock %}

@@ -1,15 +1,13 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+import bcrypt
+
+
 app = Flask(__name__)
 
 @app.route('/')
 def home():
     ##name="Noa Roth"
     return render_template("index.html")
-
-@app.route('/page1')
-def hi():
-    ##name="Page1"
-    return render_template("Page1.html")
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
