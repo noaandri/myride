@@ -22,7 +22,8 @@ def register():
 
         user_data = {
             'email': email,
-            'password': hashed_password
+            'password': hashed_password,
+            'activities': []
         }
 
         with open(os.path.join(users_folder, f"{email}.json"), 'w') as f:
@@ -67,6 +68,41 @@ def dashboard():
         user_data = json.load(f)
 
     return render_template('dashboard.html')
+
+@app.route('/add_activity', methods=['GET', 'POST'])
+def add_activity():
+    if 'user' not in session:
+        flash('Bitte logge dich zuerst ein.', 'danger')
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        activity_type = request.form['activity_type']
+        distance = request.form['distance']
+        elevation = request.form['elevation']
+        duration = request.form['duration']
+        date = request.form['date']
+
+        new_activity = {
+            'type': activity_type,
+            'distance': distance,
+            'elevation': elevation,
+            'duration': duration,
+            'date': date
+        }
+
+        user_file = os.path.join(users_folder, f"{session['user']}.json")
+        with open(user_file, 'r') as f:
+            user_data = json.load(f)
+
+        user_data['activities'].append(new_activity)
+
+        with open(user_file, 'w') as f:
+            json.dump(user_data, f)
+
+        flash('Aktivität erfolgreich hinzugefügt!', 'success')
+        return redirect(url_for('dashboard'))
+
+    return render_template('add_activity.html')
 
 
 
