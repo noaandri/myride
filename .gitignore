@@ -1,6 +1,12 @@
 roadrunner/
 .DS_Store
 
+# custon configuration files
+config.py
+
+# Ignore user configs but not user folder
+users/*
+!users/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
