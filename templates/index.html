@@ -1,26 +1,13 @@
-<!--Verknüpft File mit base.html-->
-{% extends "base.html" %}
-
-{% block content %}
-<div class="content-wrapper">
-  <div id="index-page">
-    <h3>Wilkommen zu myride!</h3>
-    <p>Deine App um dir deine gefahrenen Kilometer und Höhenmeter zusammenzufassen!</p>
-
-    <section class="features">
-        <h2>Was kannst du tun?</h2>
-        <ul>
-            <li>Siehe eine Zusammenfassung über die gefahrenen Kilometer sowie Höhenmeter.</li>
-            <li>Sehe wann du wie viel gefahren bist.</li>
-        </ul>
-    </section>
-    <section class="cta">
-        <h2>Sei dabei!</h2>
-        <p>Einfache und schnelle Registrierung.</p>
-
-    <!-- Button zur zum Registrieren -->
-    <a href="{{ url_for('register') }}" class="btn btn-primary">Registrieren</a>
-    </section>
-  </div>
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Willkommen zu deiner Fitness-App!</h1>
+    <a href="{{ url_for('register') }}">Registrieren</a>
+    <a href="{{ url_for('login') }}">Login</a>
+</body>
+</html>
