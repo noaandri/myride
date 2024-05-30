@@ -1,0 +1,26 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  
+  h1, h2 {
+    color: #333;
+  }
+  
+  form {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-top: 10px;
+  }
+  
+  input, select {
+    margin-bottom: 10px;
+  }
+  
+  button {
+    margin-top: 10px;
+  }
+  
