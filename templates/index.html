@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
     <h1>Willkommen zu deiner Fitness-App!</h1>
     <a href="{{ url_for('register') }}">Registrieren</a>
     <a href="{{ url_for('login') }}">Login</a>
-</body>
-</html>
+{% endblock %}

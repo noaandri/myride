@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <title>Registrieren</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
     <h1>Registrieren</h1>
     <form method="POST">
         <label for="email">E-Mail:</label>
@@ -15,5 +10,4 @@
         <button type="submit">Registrieren</button>
     </form>
     <a href="{{ url_for('login') }}">Bereits registriert? Login</a>
-</body>
-</html>
+{% endblock %}

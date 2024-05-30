@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <title>Aktivität hinzufügen</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
     <h1>Aktivität hinzufügen</h1>
     <form method="POST">
         <label for="activity_type">Aktivitätstyp:</label>
@@ -24,5 +19,4 @@
         <button type="submit">Aktivität hinzufügen</button>
     </form>
     <a href="{{ url_for('dashboard') }}">Zurück zum Dashboard</a>
-</body>
-</html>
+{% endblock %}
