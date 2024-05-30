@@ -1,3 +1,9 @@
+# DISCLAIMER
+<p>To add to doku:</p>
+<ul>
+    <li>Erklärung das bei app.py Line 8 (app.secret_key = secret_key) secret_key in config.py erstellt werden muss um User anzulegen</li>
+</ul>
+
 # myride
 
 ## Ausgangslage hallo
