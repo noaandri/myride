@@ -8,9 +8,10 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <!--Link zu CSS-->
         <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}"/>
+        <!--Link zu Favivon-->
+        <link rel="icon" href="{{url_for('static', filename='favicon.svg')}}" type="image/x-icon">
     </head>
     <body>
-
         {% block content %}
         <!--index.html-->
         {% endblock %}
