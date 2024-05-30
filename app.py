@@ -1,64 +1,69 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
-import bcrypt
-
+from flask import Flask, render_template, redirect, url_for, request, session, flash
+import os
+import json
+from werkzeug.security import generate_password_hash, check_password_hash
+from config import secret_key
 
 app = Flask(__name__)
+app.secret_key = secret_key
+users_folder = 'users'
+
 
 @app.route('/')
-def home():
-    ##name="Noa Roth"
-    return render_template("index.html")
+def index():
+    return render_template('index.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        # Daten aus dem Formular erfassen
         email = request.form['email']
         password = request.form['password']
-        confirm_password = request.form['confirm_password']
+        hashed_password = generate_password_hash(password)
 
-        # Überprüfen, ob Passwörter übereinstimmen
-        if password != confirm_password:
-            flash('Passwörter stimmen nicht überein', 'error')
-            return redirect(url_for('register'))
-
-        # Überprüfen, ob die E-Mail bereits registriert ist
-        if email in users:
-            flash('E-Mail bereits registriert', 'error')
-            return redirect(url_for('register'))
-
-        # Passwort hashen und Benutzer speichern
-        hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        users[email] = {
-            'first_name': request.form['first_name'],
-            'last_name': request.form['last_name'],
-            'birthdate': request.form['birthdate'],
-            'address': request.form['address'],
-            'place': request.form['place'],
-            'city': request.form['city'],
+        user_data = {
             'email': email,
-            'password': hashed_pw
+            'password': hashed_password
         }
-        session['user'] = email  # Speichern der E-Mail in der Session
-        return redirect(url_for('profile'))  # Weiterleitung zur Profilseite
+
+        with open(os.path.join(users_folder, f"{email}.json"), 'w') as f:
+            json.dump(user_data, f)
+
+        return redirect(url_for('login'))
+
     return render_template('register.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'GET':
-        return render_template('login.html')
-    else:
+    if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        user = users.get(email)
-        if user and bcrypt.checkpw(password.encode('utf-8'), user['password']):
-            session['user'] = email
-            flash("Sie sind erfolgreich eingeloggt.", "success")
-            return redirect(url_for('profile'))
-        else:
-            flash("Ungültige Anmeldeinformationen. Bitte versuchen Sie es erneut.", "error")
-            return render_template('login.html')
+
+        user_file = os.path.join(users_folder, f"{email}.json")
+        if os.path.exists(user_file):
+            with open(user_file, 'r') as f:
+                user_data = json.load(f)
+
+            if check_password_hash(user_data['password'], password):
+                session['user'] = email
+                flash('Login erfolgreich!', 'success')
+                return redirect(url_for('dashboard'))
+
+    return render_template('login.html')
+
+
+@app.route('/dashboard')
+def dashboard():
+    if 'user' not in session:
+        flash('Bitte logge dich zuerst ein.', 'danger')
+        return redirect(url_for('login'))
+
+    user_file = os.path.join(users_folder, f"{session['user']}.json")
+    with open(user_file, 'r') as f:
+        user_data = json.load(f)
+
+    return render_template('dashboard.html')
+
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5005)
