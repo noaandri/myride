@@ -3,5 +3,19 @@
 {% block content %}
     <h1>Dashboard</h1>
     <a href="{{ url_for('logout') }}">Logout</a>
+    <a href="{{ url_for('add_activity')}}">Aktivität hinzufügen</a>
     <p>Erfolgreich eingeloggt</p>
+    <table>
+        <tbody>
+            {% for index, activity in enumerate(activities) %}
+            <tr>
+                <td>{{ activity['date'] }}</td>
+                <td>{{ activity['type'] }}</td>
+                <td>{{ activity['distance'] }}</td>
+                <td>{{ activity['elevation'] }}</td>
+                <td>{{ activity['duration'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

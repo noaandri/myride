@@ -67,7 +67,13 @@ def dashboard():
     with open(user_file, 'r') as f:
         user_data = json.load(f)
 
-    return render_template('dashboard.html')
+    activities = sorted(user_data['activities'], key=lambda x: x['date'], reverse=True)
+
+    return render_template('dashboard.html', activities=activities)
+
+@app.context_processor
+def utility_processor():
+    return dict(enumerate=enumerate)
 
 @app.route('/add_activity', methods=['GET', 'POST'])
 def add_activity():
