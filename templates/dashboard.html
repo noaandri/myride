@@ -5,7 +5,16 @@
     <a href="{{ url_for('logout') }}">Logout</a>
     <a href="{{ url_for('add_activity')}}">Aktivität hinzufügen</a>
     <p>Erfolgreich eingeloggt</p>
-    <table>
+    <table class="">
+        <thead>
+            <tr>
+                <th>Datum</th>
+                <th>Aktivitätstyp</th>
+                <th>Distanz (km)</th>
+                <th>Höhenmeter (m)</th>
+                <th>Dauer (min)</th>
+            </tr>
+        </thead>
         <tbody>
             {% for index, activity in enumerate(activities) %}
             <tr>
