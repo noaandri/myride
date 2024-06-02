@@ -3,6 +3,7 @@ import os
 import json
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import secret_key
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.secret_key = secret_key
@@ -23,7 +24,11 @@ def register():
         user_data = {
             'email': email,
             'password': hashed_password,
-            'activities': []
+            'activities': [],
+            'weekly_goal': {
+                'type': None,
+                'value': 0
+            }
         }
 
         with open(os.path.join(users_folder, f"{email}.json"), 'w') as f:
@@ -69,7 +74,36 @@ def dashboard():
 
     activities = sorted(user_data['activities'], key=lambda x: x['date'], reverse=True)
 
-    return render_template('dashboard.html', activities=activities)
+    start_of_week = get_start_of_week()
+    end_of_week = get_end_of_week()
+    weekly_activities = [
+        activity for activity in activities 
+        if start_of_week <= datetime.strptime(activity['date'], '%Y-%m-%d') <= end_of_week
+    ]
+
+    weekly_total = 0
+    if user_data['weekly_goal']['type'] == 'distance':
+        weekly_total = sum(float(activity['distance']) for activity in weekly_activities if activity['distance'])
+    elif user_data['weekly_goal']['type'] == 'time':
+        weekly_total = sum(float(activity['duration']) for activity in weekly_activities if activity['duration'])
+
+    goal_value = user_data['weekly_goal']['value']
+    if goal_value > 0:
+        progress_percentage = min((weekly_total / goal_value) * 100, 100)
+    else:
+        progress_percentage = 0
+
+    return render_template('dashboard.html', activities=activities, progress_percentage=progress_percentage)
+
+def get_start_of_week():
+    today = datetime.today()
+    start_of_week = today - timedelta(days=today.weekday()) 
+    return start_of_week.replace(hour=0, minute=0, second=0, microsecond=0)
+
+def get_end_of_week():
+    start_of_week = get_start_of_week()
+    end_of_week = start_of_week + timedelta(days=6, hours=23, minutes=59, seconds=59)
+    return end_of_week
 
 @app.context_processor
 def utility_processor():
@@ -110,7 +144,36 @@ def add_activity():
 
     return render_template('add_activity.html')
 
+@app.route('/set_goal', methods=['GET', 'POST'])
+def set_goal():
+    if 'user' not in session:
+        flash('Bitte logge dich zuerst ein.', 'danger')
+        return redirect(url_for('login'))
+
+    user_file = os.path.join(users_folder, f"{session['user']}.json")
+    with open(user_file, 'r') as f:
+        user_data = json.load(f)
+
+    if request.method == 'POST':
+        goal_type = request.form['goal_type']
+        goal_value = request.form['goal_value']
+
+        user_data['weekly_goal'] = {
+            'type': goal_type,
+            'value': float(goal_value)
+        }
+
+        with open(user_file, 'w') as f:
+            json.dump(user_data, f)
+
+        flash('Wöchentliches Ziel erfolgreich gesetzt!', 'success')
+        return redirect(url_for('dashboard'))
+
+    return render_template('set_goal.html')
+
 
 
 if __name__ == '__main__':
     app.run(debug=True, port=5005)
+
+

@@ -2,10 +2,16 @@
 
 {% block content %}
     <h1>Dashboard</h1>
+
+    <div>
+        <strong>Wöchentliches Ziel:</strong> {{ progress_percentage }}%
+    </div>
+
     <a href="{{ url_for('logout') }}">Logout</a>
     <a href="{{ url_for('add_activity')}}">Aktivität hinzufügen</a>
+    <a href="{{ url_for('set_goal')}}">Wöchentliches Ziel definieren</a>
     <p>Erfolgreich eingeloggt</p>
-    <table class="">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Datum</th>
