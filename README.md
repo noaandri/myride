@@ -34,4 +34,8 @@ Tracking - Der User kann Daten eingeben und anpassen
 Ziele definieren - Der User kann Ziele definieren (KM & HM), welche ihm dann als definierte Ziele ausgegeben werden und worauf die nächsten Trainings einzahlen.
 Planing - Der User kann in der App Planungen vornehmen
 
-## Beschreibung von Quellen, wals Sie z.B. externe Datenquellen nutzen möchten
+## Quellen
+
+Favicon: Eigene Illustration 
+
+
