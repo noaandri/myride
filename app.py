@@ -173,6 +173,26 @@ def set_goal():
 
     return render_template('set_goal.html', current_goal=current_goal)
 
+@app.route('/delete_activity/<int:activity_index>', methods=['POST'])
+def delete_activity(activity_index):
+    if 'user' not in session:
+        flash('Bitte logge dich zuerst ein.', 'danger')
+        return redirect(url_for('login'))
+
+    user_file = os.path.join(users_folder, f"{session['user']}.json")
+    with open(user_file, 'r') as f:
+        user_data = json.load(f)
+
+    if 0 <= activity_index < len(user_data['activities']):
+        del user_data['activities'][activity_index]
+
+        with open(user_file, 'w') as f:
+            json.dump(user_data, f)
+
+        flash('Aktivität erfolgreich gelöscht!', 'success')
+
+    return redirect(url_for('dashboard'))
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5005)

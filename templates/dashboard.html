@@ -19,6 +19,7 @@
                 <th>Distanz (km)</th>
                 <th>Höhenmeter (m)</th>
                 <th>Dauer (min)</th>
+                <th>Aktionen</th>
             </tr>
         </thead>
         <tbody>
@@ -29,6 +30,11 @@
                 <td>{{ activity['distance'] }}</td>
                 <td>{{ activity['elevation'] }}</td>
                 <td>{{ activity['duration'] }}</td>
+                <td>
+                    <form action="{{ url_for('delete_activity', activity_index=index) }}" method="POST">
+                        <button type="submit">Löschen</button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
