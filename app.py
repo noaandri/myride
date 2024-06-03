@@ -154,6 +154,8 @@ def set_goal():
     with open(user_file, 'r') as f:
         user_data = json.load(f)
 
+    current_goal = user_data.get('weekly_goal', {'type': None, 'value': 0})
+
     if request.method == 'POST':
         goal_type = request.form['goal_type']
         goal_value = request.form['goal_value']
@@ -169,8 +171,7 @@ def set_goal():
         flash('Wöchentliches Ziel erfolgreich gesetzt!', 'success')
         return redirect(url_for('dashboard'))
 
-    return render_template('set_goal.html')
-
+    return render_template('set_goal.html', current_goal=current_goal)
 
 
 if __name__ == '__main__':

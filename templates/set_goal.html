@@ -7,6 +7,13 @@
 </head>
 <body>
     <h1>Wöchentliches Ziel setzen</h1>
+    <div>
+        {% if current_goal.type == 'distance' %}
+            <p>Aktuelles Ziel: {{ current_goal.value }} km</p>
+        {% elif current_goal.type == 'time' %}
+            <p>Aktuelles Ziel: {{ current_goal.value }} min</p>
+        {% endif %}
+    </div>
 
     <form method="POST">
         <label for="goal_type">Zieltyp:</label>
