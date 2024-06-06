@@ -4,6 +4,7 @@ import json
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import secret_key
 from datetime import datetime, timedelta
+import uuid
 
 app = Flask(__name__)
 app.secret_key = secret_key
@@ -73,7 +74,7 @@ def dashboard():
         user_data = json.load(f)
 
     activities = sorted(user_data['activities'], key=lambda x: x['date'], reverse=True)
-
+    
     start_of_week = get_start_of_week()
     end_of_week = get_end_of_week()
     weekly_activities = [
@@ -116,6 +117,7 @@ def add_activity():
         return redirect(url_for('login'))
 
     if request.method == 'POST':
+        activity_id = str(uuid.uuid4())  # 4 ist komlett random, 1 würde auch gehen (basiert auf Hostname und Zeit)
         activity_type = request.form['activity_type']
         distance = request.form['distance']
         elevation = request.form['elevation']
@@ -123,6 +125,7 @@ def add_activity():
         date = request.form['date']
 
         new_activity = {
+            'id': activity_id,
             'type': activity_type,
             'distance': distance,
             'elevation': elevation,
@@ -141,6 +144,8 @@ def add_activity():
 
         flash('Aktivität erfolgreich hinzugefügt!', 'success')
         return redirect(url_for('dashboard'))
+
+    return render_template('add_activity.html')
 
     return render_template('add_activity.html')
 
@@ -173,8 +178,8 @@ def set_goal():
 
     return render_template('set_goal.html', current_goal=current_goal)
 
-@app.route('/delete_activity/<int:activity_index>', methods=['POST'])
-def delete_activity(activity_index):
+@app.route('/delete_activity/<activity_id>', methods=['POST'])
+def delete_activity(activity_id):
     if 'user' not in session:
         flash('Bitte logge dich zuerst ein.', 'danger')
         return redirect(url_for('login'))
@@ -183,16 +188,18 @@ def delete_activity(activity_index):
     with open(user_file, 'r') as f:
         user_data = json.load(f)
 
-    if 0 <= activity_index < len(user_data['activities']):
-        del user_data['activities'][activity_index]
+    activities = user_data['activities']
+    updated_activities = [activity for activity in activities if activity['id'] != activity_id]
 
+    if len(activities) == len(updated_activities):
+        flash('Aktivität nicht gefunden!', 'danger')
+    else:
+        user_data['activities'] = updated_activities
         with open(user_file, 'w') as f:
             json.dump(user_data, f)
-
         flash('Aktivität erfolgreich gelöscht!', 'success')
 
     return redirect(url_for('dashboard'))
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=5005)
