@@ -70,7 +70,19 @@ def dashboard():
     with open(user_file, 'r') as f:
         user_data = json.load(f)
 
-    activities = sorted(user_data['activities'], key=lambda x: x['date'], reverse=True)
+    sort_by = request.args.get('sort_by', 'date')
+    sort_order = request.args.get('sort_order', 'desc')
+
+    if sort_by == 'type':
+        activities = sorted(user_data['activities'], key=lambda x: x['type'])
+    elif sort_by == 'distance':
+        activities = sorted(user_data['activities'], key=lambda x: float(x.get('distance', 0)), reverse=(sort_order == 'desc'))
+    elif sort_by == 'elevation':
+        activities = sorted(user_data['activities'], key=lambda x: float(x.get('elevation', 0)), reverse=(sort_order == 'desc'))
+    elif sort_by == 'duration':
+        activities = sorted(user_data['activities'], key=lambda x: float(x.get('duration', 0)), reverse=(sort_order == 'desc'))
+    else:
+        activities = sorted(user_data['activities'], key=lambda x: x['date'], reverse=(sort_order == 'desc'))
     
     start_of_week = get_start_of_week()
     end_of_week = get_end_of_week()
@@ -91,7 +103,7 @@ def dashboard():
     else:
         progress_percentage = 0
 
-    return render_template('dashboard.html', activities=activities, progress_percentage=progress_percentage)
+    return render_template('dashboard.html', activities=activities, progress_percentage=progress_percentage, sort_by=sort_by, sort_order=sort_order)
 
 def get_start_of_week():
     today = datetime.today()
@@ -116,7 +128,7 @@ def add_activity():
         activity_id = str(uuid.uuid4())  # 4 ist komlett random, 1 würde auch gehen (basiert auf Hostname und Zeit)
         activity_type = request.form['activity_type']
         distance = request.form['distance']
-        elevation = request.form['elevation']
+        elevation = request.form['elevation'] if request.form['elevation'] else 0
         duration = request.form['duration']
         date = request.form['date']
 

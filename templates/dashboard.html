@@ -9,6 +9,14 @@
     <a href="{{ url_for('set_goal') }}">Wöchentliches Ziel setzen</a>
     <a href="{{ url_for('logout') }}">Logout</a>
     <h2>Aktivitäten</h2>
+    <div>
+        <p>Sortieren nach:</p>
+        <a href="{{ url_for('dashboard', sort_by='date', sort_order='desc') }}">Datum absteigend (Default)</a>
+        <a href="{{ url_for('dashboard', sort_by='type', sort_order='asc') }}">Typ</a>
+        <a href="{{ url_for('dashboard', sort_by='distance', sort_order='desc') }}">Distanz absteigend</a>
+        <a href="{{ url_for('dashboard', sort_by='elevation', sort_order='desc') }}">Höhenmeter absteigend</a>
+        <a href="{{ url_for('dashboard', sort_by='duration', sort_order='desc') }}">Dauer absteigend</a>
+    </div>
     <table class="table table-striped">
         <thead>
             <tr>
