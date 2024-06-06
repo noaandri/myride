@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, session, flash
+from flask import Flask, render_template, redirect, url_for, request, session
 import os
 import json
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -52,7 +52,6 @@ def login():
 
             if check_password_hash(user_data['password'], password):
                 session['user'] = email
-                flash('Login erfolgreich!', 'success')
                 return redirect(url_for('dashboard'))
 
     return render_template('login.html')
@@ -60,13 +59,11 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('user', None)
-    flash('Erfolgreich ausgeloggt.', 'success')
     return redirect(url_for('index'))
 
 @app.route('/dashboard')
 def dashboard():
     if 'user' not in session:
-        flash('Bitte logge dich zuerst ein.', 'danger')
         return redirect(url_for('login'))
 
     user_file = os.path.join(users_folder, f"{session['user']}.json")
@@ -113,7 +110,6 @@ def utility_processor():
 @app.route('/add_activity', methods=['GET', 'POST'])
 def add_activity():
     if 'user' not in session:
-        flash('Bitte logge dich zuerst ein.', 'danger')
         return redirect(url_for('login'))
 
     if request.method == 'POST':
@@ -142,7 +138,6 @@ def add_activity():
         with open(user_file, 'w') as f:
             json.dump(user_data, f)
 
-        flash('Aktivität erfolgreich hinzugefügt!', 'success')
         return redirect(url_for('dashboard'))
 
     return render_template('add_activity.html')
@@ -152,7 +147,6 @@ def add_activity():
 @app.route('/set_goal', methods=['GET', 'POST'])
 def set_goal():
     if 'user' not in session:
-        flash('Bitte logge dich zuerst ein.', 'danger')
         return redirect(url_for('login'))
 
     user_file = os.path.join(users_folder, f"{session['user']}.json")
@@ -173,7 +167,6 @@ def set_goal():
         with open(user_file, 'w') as f:
             json.dump(user_data, f)
 
-        flash('Wöchentliches Ziel erfolgreich gesetzt!', 'success')
         return redirect(url_for('dashboard'))
 
     return render_template('set_goal.html', current_goal=current_goal)
@@ -181,7 +174,6 @@ def set_goal():
 @app.route('/delete_activity/<activity_id>', methods=['POST'])
 def delete_activity(activity_id):
     if 'user' not in session:
-        flash('Bitte logge dich zuerst ein.', 'danger')
         return redirect(url_for('login'))
 
     user_file = os.path.join(users_folder, f"{session['user']}.json")
@@ -191,13 +183,9 @@ def delete_activity(activity_id):
     activities = user_data['activities']
     updated_activities = [activity for activity in activities if activity['id'] != activity_id]
 
-    if len(activities) == len(updated_activities):
-        flash('Aktivität nicht gefunden!', 'danger')
-    else:
-        user_data['activities'] = updated_activities
-        with open(user_file, 'w') as f:
+    user_data['activities'] = updated_activities
+    with open(user_file, 'w') as f:
             json.dump(user_data, f)
-        flash('Aktivität erfolgreich gelöscht!', 'success')
 
     return redirect(url_for('dashboard'))
 
