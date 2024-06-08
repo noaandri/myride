@@ -82,17 +82,13 @@ Die User geben ihre Daten selber ein. Sie können Distanz, Zeit, Höhenmeter und
     <li>Ziel setzen - der User kann ein Distanz oder Zeit Ziel setzen um den Fortschritt zu messen</li>
 </ul>
 
-
-
 ## Probleme & Herausforderungen
 
 Während der Erarbeitung haben sich mir diverse Herausforderungen gestellt. Diese werde ich hier erläutern und wie ich sie gelöst habe.
 
 <ul>
     <li>Löschen einer Aktivität: Beim ersten Versuch die Löschfunktion zu integrieren habt es beim Löschen die Aktivität jeweils nach Index gelöscht. Nach einiger Recherche bin ich auf die Variante mit dem uuid Verfahren gekommen. Ich habe mich für Variante 4 entschieden, welche jeder Aktivität eine eindeutige ID gibt und beim Löschen diese auch wieder entfernt.</li>
-    <li> </li>
-
-
+    <li>Das Definieren des Wochenstarts, sowie des Wochenende hat sich als schwieriger herausgestellt als gedacht. Mit der Funktion datetime wird nun ausgerechnet, welche Aktivitäten in der aktuellen Woche stattgefunden haben, damit das wöchentliche Ziel berechnet wird.</li>
 </ul>
 
 ## Quellen
