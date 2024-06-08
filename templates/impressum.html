@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<!-- Impressum um Möglichkeit für Kontaktaufnahme zu bieten -->
 <h1>Impressum</h1>
 <p>
     <strong>Seitenbetreiber:</strong><br>
@@ -12,4 +14,7 @@
     Telefon: 076 431 07 18<br>
     E-Mail: noa.roth@stud.fhgr.ch<br><br>
 </p>
+
+<a href="{{ url_for('dashboard') }}">Dashboard</a>
+
 {% endblock %}

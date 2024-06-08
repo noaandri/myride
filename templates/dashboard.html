@@ -2,13 +2,19 @@
 
 {% block content %}
     <h1>Dashboard</h1>
+
+    <!-- Anzeigen Fortschritts des wöchentlichen Zieles in % -->
     <div>
         <strong>Wöchentliches Ziel:</strong> {{ progress_percentage }}%
     </div>
+
+    <!-- Navigations-Links für verschiedene Aktionen -->
     <a href="{{ url_for('add_activity') }}">Neue Aktivität hinzufügen</a>
     <a href="{{ url_for('set_goal') }}">Wöchentliches Ziel setzen</a>
     <a href="{{ url_for('logout') }}">Logout</a>
     <h2>Aktivitäten</h2>
+
+    <!-- Möglichkeit zum Sortieren der Aktivitätsliste -->
     <div>
         <p>Sortieren nach:</p>
         <a href="{{ url_for('dashboard', sort_by='date', sort_order='desc') }}">Datum absteigend (Default)</a>
@@ -17,6 +23,8 @@
         <a href="{{ url_for('dashboard', sort_by='elevation', sort_order='desc') }}">Höhenmeter absteigend</a>
         <a href="{{ url_for('dashboard', sort_by='duration', sort_order='desc') }}">Dauer absteigend</a>
     </div>
+
+    <!-- Aktivitätstabelle -->
     <table class="table table-striped">
         <thead>
             <tr>
@@ -28,6 +36,8 @@
                 <th>Aktionen</th>
             </tr>
         </thead>
+
+        <!-- Erstellt Zeile für jede Aktivität -->
         <tbody>
             {% for index, activity in enumerate(activities) %}
             <tr>
@@ -37,6 +47,7 @@
                 <td>{{ activity['elevation'] }}</td>
                 <td>{{ activity['duration'] }}</td>
                 <td>
+                    <!-- Aktion zum Löschen einer Aktivität -->
                     <form action="{{ url_for('delete_activity', activity_id=activity['id']) }}" method="POST" style="display:inline;">
                         <button type="submit">Löschen</button>
                     </form>

@@ -16,7 +16,10 @@
         <!--index.html-->
         {% endblock %}
         <footer>
+            <!-- Verlinkung Datenschutz & Impressum (auf jeder Seite) -->
             <p>© by myride | all rights reserved</p>
+            <a href="{{ url_for('datenschutz') }}">Datenschutz</a>
+            <a href="{{ url_for('impressum') }}">Impressum</a>
         <footer>
 
     </body>

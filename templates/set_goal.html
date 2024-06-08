@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <title>Wöchentliches Ziel setzen</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
     <h1>Wöchentliches Ziel setzen</h1>
+
+    <!-- Anzeigen des aktuellen wöchentlichen Ziels, falls vorhanden -->
     <div>
         {% if current_goal.type == 'distance' %}
             <p>Aktuelles Ziel: {{ current_goal.value }} km</p>
@@ -15,16 +12,22 @@
         {% endif %}
     </div>
 
+    <!-- Formular um wöchentliches Ziel zu setzen -->
     <form method="POST">
+
+        <!-- Dropdown um Zieltyp auszuwählen (Höhenmeter nicht möglich, da nicht required bei Aktivitätseingabe) -->
         <label for="goal_type">Zieltyp:</label>
         <select id="goal_type" name="goal_type">
             <option value="distance">Distanz (km)</option>
             <option value="time">Zeit (min)</option>
         </select><br>
+
+        <!-- Eingabe Zielwert -->
         <label for="goal_value">Zielwert:</label>
         <input type="number" step="0.01" id="goal_value" name="goal_value" required><br>
+
+        <!-- Formular absenden -->
         <button type="submit">Ziel setzen</button>
     </form>
     <a href="{{ url_for('dashboard') }}">Zurück zum Dashboard</a>
-</body>
-</html>
+{% endblock %}

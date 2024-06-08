@@ -2,20 +2,33 @@
 
 {% block content %}
     <h1>Aktivität hinzufügen</h1>
+    <!-- Erstellt Formular mit Post-Method -->
     <form method="POST">
+
+        <!-- Dropdown-Menü um Aktivitätsart auszuwählen (Fahrrad als default) -->
         <label for="activity_type">Aktivitätstyp:</label>
         <select id="activity_type" name="activity_type">
             <option value="Fahrrad">Fahrrad</option>
             <option value="Laufen">Laufen</option>
         </select><br>
+        
+        <!-- Eingabe Distanz in km -->
         <label for="distance">Distanz (km):</label>
         <input type="number" id="distance" name="distance" required><br>
+
+        <!-- Eingabe Höhenmeter in m -->
         <label for="elevation">Höhenmeter:</label>
         <input type="number" id="elevation" name="elevation"><br>
+
+        <!-- Eingabe Dauer in min -->
         <label for="duration">Dauer (min):</label>
         <input type="number" id="duration" name="duration" required><br>
+
+        <!-- Eingabe Datum -->
         <label for="date">Datum:</label>
         <input type="date" id="date" name="date" required><br>
+
+        <!-- Absenden des Formulars -->
         <button type="submit">Aktivität hinzufügen</button>
     </form>
     <a href="{{ url_for('dashboard') }}">Zurück zum Dashboard</a>

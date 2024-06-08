@@ -3,10 +3,16 @@
 {% block content %}
     <h1>Login</h1>
     <form method="POST">
+
+        <!-- Eingabefeld für E-Mail -->
         <label for="email">E-Mail:</label>
         <input type="email" id="email" name="email" required><br>
+
+        <!-- Eingabefeld für Passwort -->
         <label for="password">Passwort:</label>
         <input type="password" id="password" name="password" required><br>
+
+        <!-- Submit für Loginformular -->
         <button type="submit" class="btn btn-primary">Login</button>
     </form>
     <a href="{{ url_for('register') }}">Noch nicht registriert? Registrieren</a>
