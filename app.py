@@ -21,7 +21,7 @@ def register():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        hashed_password = generate_password_hash(password) # Generiert gehashtes Passwort 
+        hashed_password = generate_password_hash(password) # Generiert gehashtes Passwort (auch wenn es nicht um sensible Daten geht, sollen Passwörter nicht im Klartext gespeichert werden)
 
         # Erstellt eine User mit den Benutzerdaten 
         user_data = {
@@ -76,7 +76,7 @@ def dashboard():
     with open(user_file, 'r') as f:
         user_data = json.load(f)
 
-    # Sortiert Aktivitäten nach User Eingabe
+    # Sortiert Aktivitäten nach User Auswahl (somit kann User selbst entscheiden, wie er die Aktivitäten sortieren möchte, nicht alle User haben die gleichen Bedürfnisse) 
     sort_by = request.args.get('sort_by', 'date')
     sort_order = request.args.get('sort_order', 'desc')
 
@@ -91,7 +91,7 @@ def dashboard():
     else:
         activities = sorted(user_data['activities'], key=lambda x: x['date'], reverse=(sort_order == 'desc'))
     
-    # Sammelt alle Aktivitäten der aktuellen Woche
+    # Sammelt alle Aktivitäten der aktuellen Woche (notwendig für wöchentliches Ziel)
     start_of_week = get_start_of_week()
     end_of_week = get_end_of_week()
     weekly_activities = [
@@ -99,7 +99,7 @@ def dashboard():
         if start_of_week <= datetime.strptime(activity['date'], '%Y-%m-%d') <= end_of_week
     ]
 
-    # Berechnet den Fortschritt des wöchentlichen Ziels
+    # Berechnet den Fortschritt des wöchentlichen Ziels (im Ausdauersportbereich ist es üblich, dass Ziele wöchentlich gesetzt werden, um die Leistung zu steigern)
     weekly_total = 0
     if user_data['weekly_goal']['type'] == 'distance':
         weekly_total = sum(float(activity['distance']) for activity in weekly_activities if activity['distance'])
@@ -145,7 +145,7 @@ def add_activity():
         duration = request.form['duration']
         date = request.form['date']
 
-        # Erstellen einer neuen Aktivität
+        # Erstellen einer neuen Aktivität (Es wurden diese Daten gewähö, da sie für die meisten Aktivitäten relevant sind. Sollten User zukünftig weitere Daten wünschen, können diese hinzugefügt werden)
         new_activity = {
             'id': activity_id,
             'type': activity_type,
@@ -168,8 +168,6 @@ def add_activity():
 
     return render_template('add_activity.html')
 
-    return render_template('add_activity.html')
-
 # Route zur Zielsetzung 
 @app.route('/set_goal', methods=['GET', 'POST'])
 def set_goal():
@@ -182,6 +180,7 @@ def set_goal():
 
     current_goal = user_data.get('weekly_goal', {'type': None, 'value': 0})
 
+    # Setzt wöchentliches Ziel (User kann selbst entscheiden, ob er Distanz oder Zeit als Ziel setzen möchte. Höhenmeter kann nicht gewählt werden, da keine Pflichteingabe. Gerade im Laufsport haben Höhenmeter keine zentrale Relevanz)
     if request.method == 'POST':
         goal_type = request.form['goal_type']
         goal_value = request.form['goal_value']
@@ -209,7 +208,7 @@ def delete_activity(activity_id):
     with open(user_file, 'r') as f:
         user_data = json.load(f)
 
-    # Entfernen der Aktivität mit der eindeutigen Aktivitäts-ID
+    # Entfernen der Aktivität mit der eindeutigen Aktivitäts-ID (Falls Aktivität nicht korrekt hinzugefügt wurde, kann sie so auch wieder entfernt werden)
     activities = user_data['activities']
     updated_activities = [activity for activity in activities if activity['id'] != activity_id]
 

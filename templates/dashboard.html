@@ -3,29 +3,28 @@
 {% block content %}
     <h1>Dashboard</h1>
 
-    <!-- Anzeigen Fortschritts des wöchentlichen Zieles in % -->
+    <!-- Anzeigen Fortschritts des wöchentlichen Zieles in % (gerunded auf 2 Nachkommastellen, weil diese Information nicht auf die xte Kommastelle genau sein muss)-->
     <div>
-        <strong>Wöchentliches Ziel:</strong> {{ progress_percentage }}%
+        <strong>Wöchentliches Ziel:</strong> {{ progress_percentage | float | round(2) }}%
     </div>
 
     <!-- Navigations-Links für verschiedene Aktionen -->
-    <a href="{{ url_for('add_activity') }}">Neue Aktivität hinzufügen</a>
-    <a href="{{ url_for('set_goal') }}">Wöchentliches Ziel setzen</a>
-    <a href="{{ url_for('logout') }}">Logout</a>
-    <h2>Aktivitäten</h2>
+    <a href="{{ url_for('add_activity') }}" class="href-button">Neue Aktivität hinzufügen</a>
+    <a href="{{ url_for('set_goal') }}" class="href-button">Wöchentliches Ziel setzen</a>
+    <h3>Aktivitäten</h3>
 
     <!-- Möglichkeit zum Sortieren der Aktivitätsliste -->
     <div>
         <p>Sortieren nach:</p>
-        <a href="{{ url_for('dashboard', sort_by='date', sort_order='desc') }}">Datum absteigend (Default)</a>
-        <a href="{{ url_for('dashboard', sort_by='type', sort_order='asc') }}">Typ</a>
-        <a href="{{ url_for('dashboard', sort_by='distance', sort_order='desc') }}">Distanz absteigend</a>
-        <a href="{{ url_for('dashboard', sort_by='elevation', sort_order='desc') }}">Höhenmeter absteigend</a>
-        <a href="{{ url_for('dashboard', sort_by='duration', sort_order='desc') }}">Dauer absteigend</a>
+        <a href="{{ url_for('dashboard', sort_by='date', sort_order='desc') }}" class="href-button">Datum absteigend (Default)</a>
+        <a href="{{ url_for('dashboard', sort_by='type', sort_order='asc') }}" class="href-button">Typ</a>
+        <a href="{{ url_for('dashboard', sort_by='distance', sort_order='desc') }}" class="href-button">Distanz absteigend</a>
+        <a href="{{ url_for('dashboard', sort_by='elevation', sort_order='desc') }}" class="href-button">Höhenmeter absteigend</a>
+        <a href="{{ url_for('dashboard', sort_by='duration', sort_order='desc') }}" class="href-button">Dauer absteigend</a>
     </div>
 
     <!-- Aktivitätstabelle -->
-    <table class="table table-striped">
+    <table>
         <thead>
             <tr>
                 <th>Datum</th>
@@ -49,11 +48,14 @@
                 <td>
                     <!-- Aktion zum Löschen einer Aktivität -->
                     <form action="{{ url_for('delete_activity', activity_id=activity['id']) }}" method="POST" style="display:inline;">
-                        <button type="submit">Löschen</button>
+                        <button type="submit" class="submit-button">Löschen</button>
                     </form>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <!-- Logout Button -->
+    <a href="{{ url_for('logout') }}" class="btn btn-outline-primary">Logout</a>
 {% endblock %}

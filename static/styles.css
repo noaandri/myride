@@ -4,7 +4,7 @@ body {
   background-color: #fdf5e6; 
   color: #666666; 
   font-family: Arial, sans-serif;
-  margin: 0;
+  margin-left: 20px;
   padding: 0;
 }
 
@@ -64,7 +64,7 @@ footer {
   color: grey;
   text-align: center;
   padding: 10px 0;
-  position: fixed;
+  position: static;
   width: 100%;
   bottom:0;
 }
