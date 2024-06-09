@@ -8,7 +8,7 @@ import uuid
 
 app = Flask(__name__)
 app.secret_key = secret_key # Setzt secret key für aktuelle Sitzung 
-users_folder = 'users' # Ordner für Userdaten
+users_folder = 'users' # Setzt Variable für User Ordner
 
 # Route für Startseite
 @app.route('/')
@@ -19,11 +19,11 @@ def index():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        hashed_password = generate_password_hash(password) # Generiert gehashtes Passwort (auch wenn es nicht um sensible Daten geht, sollen Passwörter nicht im Klartext gespeichert werden)
+        email = request.form['email'] # Speichert Email aus dem HTML-Fomrular in Variable
+        password = request.form['password'] # Speichert Passwort aus dem HTML-Fomrular in Variable
+        hashed_password = generate_password_hash(password) # Generiert verschlüsseltes Passwort (auch wenn es nicht um sensible Daten geht, sollen Passwörter nicht im Klartext gespeichert werden)
 
-        # Erstellt eine User mit den Benutzerdaten 
+        # Erstellt eine User mit den Benutzerdaten aus den Variablen von oben
         user_data = {
             'email': email,
             'password': hashed_password,
@@ -34,7 +34,7 @@ def register():
             }
         }
 
-        # Speichert die Userdaten in einer JSON-Datei
+        # Speichert die Userdaten in einer JSON-Datei, die nach der Email benannt ist
         with open(os.path.join(users_folder, f"{email}.json"), 'w') as f:
             json.dump(user_data, f)
 
@@ -50,7 +50,7 @@ def login():
         password = request.form['password']
 
         user_file = os.path.join(users_folder, f"{email}.json")
-        if os.path.exists(user_file): # Prüft ob Benutzerdatei existiert
+        if os.path.exists(user_file): # Prüft ob Benutzerdatei existiert und öffnet sie
             with open(user_file, 'r') as f:
                 user_data = json.load(f)
 
@@ -91,9 +91,10 @@ def dashboard():
     else:
         activities = sorted(user_data['activities'], key=lambda x: x['date'], reverse=(sort_order == 'desc'))
     
-    # Sammelt alle Aktivitäten der aktuellen Woche (notwendig für wöchentliches Ziel)
+    # Definiert Start- und Endedatum der aktuellen Woche
     start_of_week = get_start_of_week()
     end_of_week = get_end_of_week()
+    # Sammelt alle Aktivitäten der aktuellen Woche (notwendig für wöchentliches Ziel)
     weekly_activities = [
         activity for activity in activities 
         if start_of_week <= datetime.strptime(activity['date'], '%Y-%m-%d') <= end_of_week
@@ -106,6 +107,7 @@ def dashboard():
     elif user_data['weekly_goal']['type'] == 'time':
         weekly_total = sum(float(activity['duration']) for activity in weekly_activities if activity['duration'])
 
+    # Variable weekly_total wird durch das wöchentliche Ziel geteilt und mit 100 multipliziert, um den Fortschritt in Prozent zu berechnen. Der Wert wird auf 100 begrenzt, falls das Ziel überschritten wird.
     goal_value = user_data['weekly_goal']['value']
     if goal_value > 0:
         progress_percentage = min((weekly_total / goal_value) * 100, 100)
@@ -126,11 +128,6 @@ def get_end_of_week():
     end_of_week = start_of_week + timedelta(days=6, hours=23, minutes=59, seconds=59)
     return end_of_week
 
-# Flask-Kontextprozessor, damit Enumerate in Vorlage verwendet werden kann
-@app.context_processor
-def utility_processor():
-    return dict(enumerate=enumerate)
-
 # Route um Aktivitäten hinzuzufügen 
 @app.route('/add_activity', methods=['GET', 'POST'])
 def add_activity():
@@ -138,14 +135,14 @@ def add_activity():
         return redirect(url_for('login'))
 
     if request.method == 'POST':
-        activity_id = str(uuid.uuid4())  # Erstellt eine eindeutige ID für die jewielige Aktivität. 4 ist komlett random, 1 würde auch gehen (basiert auf Hostname und Zeit)
+        activity_id = str(uuid.uuid4())  # Erstellt eine eindeutige ID für die jeweilige Aktivität. uuid4 ist komlett random, uuid1 wäre für diesen Fall auch noch sinnvoll (basiert auf Hostname und Zeit), uuid2 ist für DCE Security reserviert, uuid3 basiert auf MD5 Hash, uuid5 basiert auf SHA-1 Hash, alles etwas overkill für diesen Fall
         activity_type = request.form['activity_type']
         distance = request.form['distance']
-        elevation = request.form['elevation'] if request.form['elevation'] else 0
+        elevation = request.form['elevation'] if request.form['elevation'] else 0 # Falls keine Höhenmeter angegeben wurden, wird 0 gesetzt -> wichtig für die Sortierung nach Höhenmetern. Wenn keine Value gesetzt schlägt Sortierung fehl.
         duration = request.form['duration']
         date = request.form['date']
 
-        # Erstellen einer neuen Aktivität (Es wurden diese Daten gewähö, da sie für die meisten Aktivitäten relevant sind. Sollten User zukünftig weitere Daten wünschen, können diese hinzugefügt werden)
+       # Erstellen einer neuen Aktivität (Es wurden diese Daten gewählt, da sie für die Sportarten Joggen und Velofahren relevant sind. Sollten User zukünftig weitere Daten wünschen, könnten das Forumlar immer noch erweitert werden)
         new_activity = {
             'id': activity_id,
             'type': activity_type,
@@ -159,7 +156,7 @@ def add_activity():
         with open(user_file, 'r') as f:
             user_data = json.load(f)
 
-        user_data['activities'].append(new_activity) # Fügt neue Aktivität dem User hinzu
+        user_data['activities'].append(new_activity) # Fügt neue Aktivität als Liste dem User hinzu
 
         with open(user_file, 'w') as f:
             json.dump(user_data, f)
