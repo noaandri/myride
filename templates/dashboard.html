@@ -14,7 +14,7 @@
     <h3>Aktivitäten</h3>
 
     <!-- Möglichkeit zum Sortieren der Aktivitätsliste -->
-    <div>
+    <div class="button-abstand">
         <p>Sortieren nach:</p>
         <a href="{{ url_for('dashboard', sort_by='date', sort_order='desc') }}" class="href-button">Datum absteigend (Default)</a>
         <a href="{{ url_for('dashboard', sort_by='type', sort_order='asc') }}" class="href-button">Typ</a>
@@ -38,7 +38,7 @@
 
         <!-- Erstellt Zeile für jede Aktivität -->
         <tbody>
-            {% for index, activity in enumerate(activities) %}
+            {% for activity in activities %}
             <tr>
                 <td>{{ activity['date'] }}</td>
                 <td>{{ activity['type'] }}</td>

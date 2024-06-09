@@ -209,3 +209,7 @@ form button:hover {
 .form-container {
   padding: 20px;
 }
+
+.button-abstand {
+  margin-bottom: 20px;
+}
