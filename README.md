@@ -1,7 +1,11 @@
 ### Setup für Programm User:
-<ul>
-    <li>Bei app.py Line 8 (app.secret_key = secret_key) secret_key in config.py erstellt werden muss um Sessions anzulegen. Für den secret_key kann eine beliebige Zeichenfolge gesetzt werden.</li>
-</ul>
+<ol>
+    <li>Um das Programm zu starten, muss der User lokal eine Datei "config.py" erstellen und darin einen secret_key definieren (Kann ein beliebiger key sein). Dieser wird aus sicherheitsgründen nicht mitgegeben. Ebenfalls muss ein Ordner "users" erstellt werden, in welchem alle userdaten gespeichert werden. </li>
+    <li>Der User muss sich nun registrieren und seine Daten werden in seinem User File gespeichert.</li>
+    <li>Nun kann sich der User einloggen und kann über die Funktion "Neue Aktivität" Aktivitäten hinzufügen. Diese bekommt er im Dashbaord angezeigt. Hat er eine Aktitvät zu viel oder falsch erfasst, kann er diese auch über das dashboard löschen. Ebenfalls kanne er alle erfassten Aktivitäten nach belieben sortieren.</li>
+    <li>Über die Funktion "Wöchentliches Ziel setzen" kann der User ein wöchentliches Distanz- oder Zeitziel definieren. Sollte er bereits eines erfasst haben, kann er einfach ein neues erfassen und das alte ist überschrieben. Den aktuellen Fortschritt des wöchentlichen Zieles wird dem User ebenfalls auf den Dashbaord angezeigt.</li>
+    <li>Sollte der User Kontakt zum Seitenbetreiber aufnehmen wollen, kann er dies über die Kontaktdaten im Impressum tun. Auch die Datenschutzrichtlinien erreicht er per Link im Footer.</li>
+</ol>
 
 # myride
 
@@ -82,6 +86,9 @@ Die User geben ihre Daten selber ein. Sie können Distanz, Zeit, Höhenmeter und
     <li>Ziel setzen - der User kann ein Distanz oder Zeit Ziel setzen um den Fortschritt zu messen</li>
 </ul>
 
+## Überlegunen bei der Entstehung
+
+
 ## Probleme & Herausforderungen
 
 Während der Erarbeitung haben sich mir diverse Herausforderungen gestellt. Diese werde ich hier erläutern und wie ich sie gelöst habe.
@@ -89,6 +96,7 @@ Während der Erarbeitung haben sich mir diverse Herausforderungen gestellt. Dies
 <ul>
     <li>Löschen einer Aktivität: Beim ersten Versuch die Löschfunktion zu integrieren habt es beim Löschen die Aktivität jeweils nach Index gelöscht. Nach einiger Recherche bin ich auf die Variante mit dem uuid Verfahren gekommen. Ich habe mich für Variante 4 entschieden, welche jeder Aktivität eine eindeutige ID gibt und beim Löschen diese auch wieder entfernt.</li>
     <li>Das Definieren des Wochenstarts, sowie des Wochenende hat sich als schwieriger herausgestellt als gedacht. Mit der Funktion datetime wird nun ausgerechnet, welche Aktivitäten in der aktuellen Woche stattgefunden haben, damit das wöchentliche Ziel berechnet wird.</li>
+    <li>Die Buttons zum Löschen einer Aktivität aus der Liste haben wie man sehen kann einen unschönen Rand. Diesen zu entfernen ist mir nicht gelungen. Die Verzweiflung ist gross geworden aber ich musste akzeptieren, dass meine Fähigkeiten wohl nicht genügen, dies zu richten.</li>
 </ul>
 
 ## Quellen
@@ -101,6 +109,7 @@ Folgende Quellen dienten zur Erarbeitung des Projekts:
 * [Chat GPT](https://chatgpt.com/)
 * [Flask-Dokumentation](https://flask.palletsprojects.com/en/3.0.x/) 
 * Untestützung eines Arbeitskollegen (gelernter Informatiker)
+* Danke Lukas fürs merhmalige troubleshooten!
 
 
 
